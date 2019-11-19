@@ -1,7 +1,7 @@
 package models;
 
 public class Book {
-    private  int id;
+    private int id;
     private String label;
     private String author;
     private String genre;

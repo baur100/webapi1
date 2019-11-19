@@ -5,26 +5,26 @@ import java.util.List;
 
 public class BookResponse {
     private Book value;
-    private ArrayList<String> errors=new ArrayList<>();
+    private ArrayList<String> errors = new ArrayList<>();
 
     public BookResponse(Book value, ArrayList<String> errors) {
         this.value = value;
         this.errors = errors;
     }
 
-    public void setBook(Book book) {
-        this.value = book;
+    public void setValue(Book value) {
+        this.value = value;
+    }
+
+    public Book getValue() {
+        return value;
     }
 
     public void setErrors(ArrayList<String> errors) {
         this.errors = errors;
     }
 
-    public Book getBook() {
-        return value;
-    }
-
-    public ArrayList<String> getErrors() {
+    public List<String> getErrors() {
         return errors;
     }
 }
