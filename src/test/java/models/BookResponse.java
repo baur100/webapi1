@@ -5,14 +5,10 @@ import java.util.List;
 
 public class BookResponse {
     private Book value;
-    private ArrayList<String> errors = new;
+    private ArrayList<String> errors = new ArrayList<>();
 
-    public BookResponse(Book value, List<String> errors) {
+    public BookResponse(Book value, ArrayList<String> errors) {
         this.value = value;
-        this.errors = errors;
-    }
-
-    public void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
@@ -20,11 +16,15 @@ public class BookResponse {
         this.value = value;
     }
 
-    public List<String> getErrors() {
-        return errors;
-    }
-
     public Book getValue() {
         return value;
+    }
+
+    public void setErrors(ArrayList<String> errors) {
+        this.errors = errors;
+    }
+
+    public List<String> getErrors() {
+        return errors;
     }
 }

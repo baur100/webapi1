@@ -12,10 +12,12 @@ import java.net.URISyntaxException;
 
 import static io.restassured.RestAssured.given;
 
+
 public class GetTest {
+
+
     @Test
     public void testGet_getABookById() throws URISyntaxException {
-
         URIBuilder url = new URIBuilder();
         url.setScheme("http")
                 .setHost("booklibrarywebapidev.azurewebsites.net")
@@ -23,24 +25,24 @@ public class GetTest {
                 .setPort(80)
                 .build();
 
-        Response response = given()
-                .baseUri(url.toString())
-               // .basePath("api/books/id/240")
-                .header("Authorization","Basic YWJjQHh5ei5jb206VGVzdHRlc3QxMjMh")
-                .header("Content-type", "application/JSON")
-                .contentType(ContentType.JSON)
-                .get()
+        Response response =
+                given()
+                    .baseUri(url.toString())
+//                .basePath("api/books/id/240")
+                    .header("Authorization","Basic YWJjQHh5ei5jb206VGVzdHRlc3QxMjMh")
+                    .header("Content-Type","application/JSON")
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get()
                 .then()
-                .statusCode(200)
-                .extract()
-                .response();
+                    .statusCode(200)
+                    .extract()
+                    .response();
 
         JsonPath json = response.jsonPath();
-
-        BookResponse bookResponse = json.getObject("$", BookResponse.class);
+        BookResponse bookResponse = json.getObject("$",BookResponse.class);
 
         Assert.assertTrue(true);
-
 
     }
 }
