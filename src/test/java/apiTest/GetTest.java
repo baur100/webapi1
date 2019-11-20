@@ -2,34 +2,47 @@ package apiTest;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-import models.BookRersponse;
+import models.BookResponse;
+import org.apache.http.client.utils.URIBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import io.restassured.response.Response;
 
+import java.net.URISyntaxException;
+
 import static io.restassured.RestAssured.given;
+
 
 public class GetTest {
 
+
     @Test
-    public void testGet_getBookById() {
-        Response response = given()
-                .baseUri("http://booklibrarywebapidev.azurewebsites.net/")
-                .basePath("/api/books/id/232")
-                .header("Authorization", "Basic YWJjQHh5ei5jb206VGVzdHRlc3QxMjMh")
-                .contentType(ContentType.JSON)
+    public void testGet_getABookById() throws URISyntaxException {
+        URIBuilder url = new URIBuilder();
+        url.setScheme("http")
+                .setHost("booklibrarywebapidev.azurewebsites.net")
+                .setPath("api/books/id/240")
+                .setPort(80)
+                .build();
+
+        Response response =
+                given()
+                    .baseUri(url.toString())
+//                .basePath("api/books/id/240")
+                    .header("Authorization","Basic YWJjQHh5ei5jb206VGVzdHRlc3QxMjMh")
+                    .header("Content-Type","application/JSON")
+                    .contentType(ContentType.JSON)
                 .when()
                     .get()
                 .then()
                     .statusCode(200)
                     .extract()
                     .response();
-// Parser:
+
         JsonPath json = response.jsonPath();
-        BookRersponse bookRersponse = json.getObject("$", BookRersponse.class);
-//        переводим наш файл из json в объект класса bookResponse
+        BookResponse bookResponse = json.getObject("$",BookResponse.class);
 
         Assert.assertTrue(true);
-    }
 
+    }
 }
