@@ -42,7 +42,13 @@ public class GetTest {
         JsonPath json = response.jsonPath();
         BookResponse bookResponse = json.getObject("$",BookResponse.class);
 
-        Assert.assertTrue(true);
+        Assert.assertEquals(bookResponse.getErrors().size(),0);
+        Assert.assertEquals(bookResponse.getValue().getId(),240);
+        Assert.assertEquals(bookResponse.getValue().getLabel(),"XXstring");
+        Assert.assertEquals(bookResponse.getValue().getAuthor(),"XXstring");
+        Assert.assertEquals(bookResponse.getValue().getGenre(),"XXstring");
+        Assert.assertEquals(bookResponse.getValue().getCondition(),"XXstring");
+
 
     }
 }
