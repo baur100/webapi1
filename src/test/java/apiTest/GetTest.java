@@ -1,12 +1,12 @@
 package apiTest;
 
 import io.restassured.http.ContentType;
-import org.apache.http.client.utils.URIBuilder;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import models.BookResponse;
+import org.apache.http.client.utils.URIBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import io.restassured.response.Response;
 
 import java.net.URISyntaxException;
 
@@ -22,7 +22,8 @@ public class GetTest {
         url.setScheme("http")
                 .setHost("booklibrarywebapidev.azurewebsites.net")
                 .setPath("api/books/id/240")
-                .setPort(80);
+                .setPort(80)
+                .build();
 
         Response response =
                 given()
