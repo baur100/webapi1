@@ -4,12 +4,10 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import models.Book;
 import models.BookResponse;
-import models.GetAllBooksResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -18,14 +16,14 @@ public class GetTest extends BaseTest{
     public void testGet_getABookById() throws URISyntaxException {
         Response response =
                 given()
-                    .baseUri(baseUrl)
-                    .basePath("api/books/id/240")
-                    .headers(headers)
-                .when()
-                    .get()
-                .then()
-                    .extract()
-                    .response();
+                        .baseUri(baseUrl)
+                        .basePath("api/books/id/240")
+                        .headers(headers)
+                        .when()
+                        .get()
+                        .then()
+                        .extract()
+                        .response();
 
         Assert.assertEquals(response.getStatusCode(),200);
 
@@ -46,26 +44,8 @@ public class GetTest extends BaseTest{
         Assert.assertEquals(bookResponse.getValue().getGenre(),"XXstring");
         Assert.assertEquals(bookResponse.getValue().getCondition(),"XXstring");
     }
+        @Test
+        public void getAllBooks(){
 
-    @Test
-    public void getAllBooks(){
-            Response response =
-                    given()
-                            .baseUri(baseUrl)
-                            .basePath("api/books/all")
-                            .headers(headers)
-                            .when()
-                            .get()
-                            .then()
-                            .extract()
-                            .response();
-            Assert.assertEquals(response.getStatusCode(),200);
-
-            JsonPath json = response.jsonPath();
-            GetAllBooksResponse getAllBookResponse = json.getObject("$", GetAllBooksResponse.class);
-            List<Book> booksList = getAllBookResponse.getValue();
-
-            boolean result = booksList.stream().anyMatch((s) -> s.getId()==5);
-            Assert.assertTrue(result);
+        }
     }
-}
