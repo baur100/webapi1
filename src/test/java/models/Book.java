@@ -54,4 +54,5 @@ public class Book {
     public String getGenre() {
         return genre;
     }
+
 }
