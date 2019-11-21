@@ -2,6 +2,7 @@ package apiTest;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import models.Book;
 import models.BookResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.testng.Assert;
@@ -13,25 +14,23 @@ import java.net.URISyntaxException;
 import static io.restassured.RestAssured.given;
 
 
-public class GetTest {
+public class GetTest extends BaseTest{
 
 
     @Test
     public void testGet_getABookById() throws URISyntaxException {
-        URIBuilder url = new URIBuilder();
-        url.setScheme("http")
-                .setHost("booklibrarywebapidev.azurewebsites.net")
-                .setPath("api/books/id/240")
-                .setPort(80)
-                .build();
+//        URIBuilder url = new URIBuilder();
+//        url.setScheme("http")
+//                .setHost("booklibrarywebapidev.azurewebsites.net")
+//                .setPath("api/books/id/240")
+//                .setPort(80)
+//                .build();
 
         Response response =
                 given()
-                    .baseUri(url.toString())
-//                .basePath("api/books/id/240")
-                    .header("Authorization","Basic YWJjQHh5ei5jb206VGVzdHRlc3QxMjMh")
-                    .header("Content-Type","application/JSON")
-                    .contentType(ContentType.JSON)
+                    .baseUri(basUrl)
+                .basePath("api/books/id/240")
+                  .headers(headers)
                 .when()
                     .get()
                 .then()
@@ -40,9 +39,20 @@ public class GetTest {
                     .response();
 
         JsonPath json = response.jsonPath();
+        json.prettyPrint();
+
         BookResponse bookResponse = json.getObject("$",BookResponse.class);
-
-        Assert.assertTrue(true);
-
+        Book book=json.getObject("value",Book.class);
+        Assert.assertEquals(book.getId(),240);
+        Assert.assertEquals(book.getAuthor(), "XXstring");
+        Assert.assertEquals(book.getCondition(), "XXstring");
+        Assert.assertEquals(book.getGenre(), "XXstring");
+        Assert.assertEquals(book.getLabel(), "XXstring");
+        Assert.assertEquals(bookResponse.getErrors().size(), 0);
+        Assert.assertEquals(bookResponse.getValue().getId(), 240);
+        Assert.assertEquals(bookResponse.getValue().getLabel(), "XXstring");
+        Assert.assertEquals(bookResponse.getValue().getAuthor(), "XXstring");
+        Assert.assertEquals(bookResponse.getValue().getGenre(), "XXstring");
+        Assert.assertEquals(bookResponse.getValue().getCondition(), "XXstring");
     }
 }
