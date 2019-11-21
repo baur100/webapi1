@@ -38,9 +38,6 @@ public class GetTest {
                     .extract()
                     .response();
 
-
-        
-
         JsonPath json = response.jsonPath();
         BookResponse bookResponse = json.getObject("$",BookResponse.class);
 
