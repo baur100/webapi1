@@ -1,15 +1,15 @@
 package apiTest;
 
-import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import models.AllBooksResponse;
 import models.Book;
 import models.BookResponse;
-import org.apache.http.client.utils.URIBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import io.restassured.response.Response;
 
 import java.net.URISyntaxException;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
@@ -54,5 +54,48 @@ public class GetTest extends BaseTest{
         Assert.assertEquals(bookResponse.getValue().getAuthor(), "XXstring");
         Assert.assertEquals(bookResponse.getValue().getGenre(), "XXstring");
         Assert.assertEquals(bookResponse.getValue().getCondition(), "XXstring");
+    }
+
+    @Test
+
+    public void getAllBooks(){
+        Response response=
+                given()
+                .baseUri(basUrl)
+                .basePath("api/books/all")
+                .headers(headers)
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        JsonPath json=response.jsonPath();
+        json.prettyPrint();
+
+        AllBooksResponse allBooksResponse=json.getObject("$",AllBooksResponse.class);
+        var book=allBooksResponse.getValue();
+
+        //Using foreach
+        for (Book allBooks : book) {
+            if (allBooks.getId()==2){
+                Assert.assertEquals(allBooks.getId(), 2);
+                Assert.assertEquals(allBooks.getLabel(), "Mol Gennadi");
+                Assert.assertEquals(allBooks.getAuthor(), "Max Kamenni");
+                Assert.assertEquals(allBooks.getGenre(), "utopia");
+                Assert.assertEquals(allBooks.getCondition(), "old");
+            }
+        }
+        //Using stream API
+        book.stream()
+                .filter(allBooks->allBooks.getId()==2)
+        .forEach(allBooks->Assert.assertEquals(allBooks.getLabel(), "Mol Gennadi"));
+
+//            Assert.assertEquals(allBooks.getLabel(), "Mol Gennadi");
+//            Assert.assertEquals(allBooks.getAuthor(), "Max Kamenni");
+//            Assert.assertEquals(allBooks.getGenre(), "utopia");
+//            Assert.assertEquals(allBooks.getCondition(), "old");
+
     }
 }
