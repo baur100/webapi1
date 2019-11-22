@@ -85,6 +85,7 @@ public class GetTest extends BaseTest{
                 Assert.assertEquals(allBooks.getAuthor(), "Max Kamenni");
                 Assert.assertEquals(allBooks.getGenre(), "utopia");
                 Assert.assertEquals(allBooks.getCondition(), "old");
+                Assert.assertEquals(allBooksResponse.getErrors().size(), 0);
             }
         }
         //Using stream API
@@ -96,6 +97,8 @@ public class GetTest extends BaseTest{
 //            Assert.assertEquals(allBooks.getAuthor(), "Max Kamenni");
 //            Assert.assertEquals(allBooks.getGenre(), "utopia");
 //            Assert.assertEquals(allBooks.getCondition(), "old");
+//        Assert.assertEquals(allBooksResponse.getErrors().size(), 0);
+
 
     }
 }
