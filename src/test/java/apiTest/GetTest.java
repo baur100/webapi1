@@ -2,6 +2,7 @@ package apiTest;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import models.Book;
 import models.BookResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.testng.Assert;
@@ -40,9 +41,17 @@ public class GetTest {
                     .response();
 
         JsonPath json = response.jsonPath();
-        BookResponse bookResponse = json.getObject("$",BookResponse.class);
 
-        Assert.assertTrue(true);
+        //json.prettyPrint();
+
+
+       BookResponse bookResponse = json.getObject("$",BookResponse.class);
+       Book book = json.getObject("value", Book.class);
+       Assert.assertEquals(book.getId(), 240);
+
+//        Assert.assertEquals(bookResponse.getErrors().size(),0);
+//        Assert.assertEquals(bookResponse.getValue().getId(), 240);
+//
 
     }
 }
