@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 
@@ -46,26 +46,33 @@ public class GetTest extends BaseTest{
         Assert.assertEquals(bookResponse.getValue().getGenre(),"XXstring");
         Assert.assertEquals(bookResponse.getValue().getCondition(),"XXstring");
     }
-
-    @Test
-    public void getAllBooks(){
-        Response response =
+        @Test
+        public void getAllBooks(){
+            Response response =
                 given()
-                        .baseUri(baseUrl)
-                        .basePath("api/books/all")
-                        .headers(headers)
-                        .when()
-                        .get()
-                        .then()
-                        .extract()
-                        .response();
-        Assert.assertEquals(response.getStatusCode(),200);
+                     .baseUri(baseUrl)
+                     .basePath("api/books/all")
+                     .headers(headers)
+                .when()
+                     .get()
+                .then()
+                     .extract()
+                     .response();
 
-        JsonPath json = response.jsonPath();
-        GetAllBooksResponse getAllBookResponse = json.getObject("$", GetAllBooksResponse.class);
-        List<Book> booksList = getAllBookResponse.getValue();
+            Assert.assertEquals(response.getStatusCode(),200);
 
-        boolean result = booksList.stream().anyMatch((s) -> s.getId()==5);
-        Assert.assertTrue(result);
+            JsonPath json = response.jsonPath();
+            var allBooksResponse = json.getObject("$", GetAllBooksResponse.class);
+
+            Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book->book.getId()==30).findFirst();
+
+            Assert.assertTrue(theBook.isPresent(), "Book not found");
+
+            Book book=theBook.get();
+            Assert.assertEquals(book.getId(),30);
+            Assert.assertEquals(book.getAuthor(),"Joan Rouling");
+            Assert.assertEquals(book.getCondition(),"new");
+            Assert.assertEquals(book.getGenre(),"fantasy");
+            Assert.assertEquals(book.getLabel(),"Harry Potter");
+        }
     }
-}
