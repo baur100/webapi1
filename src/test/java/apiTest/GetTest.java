@@ -1,10 +1,8 @@
 package apiTest;
 
-import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import models.Book;
 import models.BookResponse;
-import org.apache.http.client.utils.URIBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import io.restassured.response.Response;
