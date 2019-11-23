@@ -1,6 +1,6 @@
 package apiTest;
 
-import io.restassured.path.json.JsonPath;
+ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import models.Book;
 import models.BookResponse;
@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import static io.restassured.RestAssured.given;
 
 public class GetTest extends BaseTest{
+
     @Test
     public void testGet_getABookById() throws URISyntaxException {
         Response response =
