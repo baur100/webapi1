@@ -1,10 +1,16 @@
 package models;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GetAllBooksResponse {
-        private ArrayList<Book> value;
-        private ArrayList<String> errors;
+    private List<Book> value;
+    private List<String> errors;
+
+    public List<Book> getValue() {
+        return value;
     }
 
-
+    public List<String> getErrors() {
+        return errors;
+    }
+}
