@@ -7,6 +7,8 @@ import models.Book;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Optional;
+
 import static io.restassured.RestAssured.given;
 
 public class HomeworkGetAllBooks extends BaseTest {
@@ -64,16 +66,19 @@ public class HomeworkGetAllBooks extends BaseTest {
                         .extract()
                         .response();
 
+        Assert.assertEquals(response.getStatusCode(), 200);
+
         JsonPath json = response.jsonPath();
-        System.out.println("======== List of All books: ============");
-        json.prettyPrint();
 
-        AllBooksResponse allBooksResponse = json.getObject("$", AllBooksResponse.class);
-        var allBooks = allBooksResponse.getValue();
+        var allBooksResponse = json.getObject("$", AllBooksResponse.class);
 
-        allBooks.stream()
-                .filter(book->book.getId() == 126)
-                .forEach(book -> Assert.assertEquals(book.getLabel(), "Red Hood"));
+        Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book->book.getId() == 126).findFirst();
+
+        Assert.assertTrue(theBook.isPresent(),"Book not found");
+        Assert.assertEquals(theBook.get().getLabel(), "Red Hood");
+        Assert.assertEquals(theBook.get().getAuthor(), "Charles Peroh");
+        Assert.assertEquals(theBook.get().getGenre(), "Fairytale");
+        Assert.assertEquals(theBook.get().getCondition(), "new");
 
         Assert.assertEquals(allBooksResponse.getErrors().size(), 0);
     }
