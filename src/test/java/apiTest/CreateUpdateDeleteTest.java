@@ -5,24 +5,74 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import models.Book;
 import models.BookCreateResponse;
-import org.apache.commons.lang3.RandomStringUtils;
+import models.BookDeleteResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static helpers.DataGenerator.generateRandomBook;
 import static io.restassured.RestAssured.given;
 
 public class CreateUpdateDeleteTest extends BaseTest{
-        @Test
-    public  void createBook(){
-            Book book = generateRandomBook();
-            Book book = new Book(0, "H, I'm a book", "Some author", "a genre", "very bad");
-            String payload=new Gson().toJson(book);
-            Response response = given().baseUri(baseUrl).basePath("api/books").headers(headers).body(payload).when().post().then().extract().response();
-            Assert.assertEquals(response.statusCode(),200);
-            JsonPath json=response.jsonPath();
-            var bookCreateResponse = json.getObject("$", BookCreateResponse.class);
-            Assert.assertEquals(bookCreateResponse.getErrors().size(), 0);
-        }
+    @Test
+    public void createBook(){
+        //Arrange
+        Book book = generateRandomBook();
+        String payload = new Gson().toJson(book);
+
+        //Act
+        Response response = given()
+                .baseUri(baseUrl)
+                .basePath("api/books")
+                .headers(headers)
+                .body(payload)
+        .when()
+                .post()
+        .then()
+                .extract()
+                .response();
+
+        //Assert
+        Assert.assertEquals(response.statusCode(),200);
+
+        JsonPath json = response.jsonPath();
+        var bookCreateResponse = json.getObject("$",BookCreateResponse.class);
+        Assert.assertEquals(bookCreateResponse.getErrors().size(),0);
+        Assert.assertTrue(bookCreateResponse.getValue()>0);
+        System.out.println(bookCreateResponse.getValue());
+    }
+
+    @Test
+    public void deleteBook(){
+        Response response = given()
+                .baseUri(baseUrl)
+                .basePath("api/books/id/253")
+                .headers(headers)
+        .when()
+                .delete()
+        .then()
+                .extract()
+                .response();
+
+        Assert.assertEquals(response.statusCode(),200);
+
+        JsonPath json = response.jsonPath();
+        var bookDeleteResponse = json.getObject("$", BookDeleteResponse.class);
+        Assert.assertEquals(bookDeleteResponse.getErrors().size(),0);
+        Assert.assertNotNull(bookDeleteResponse.value);
+        Assert.assertTrue(bookDeleteResponse.value);
+    }
+
+    @Test
+    public void deleteNonExistingBook(){
+
+    }
+
+    @Test
+    public void updateBook(){
+
+    }
+
+
 
 
 }
