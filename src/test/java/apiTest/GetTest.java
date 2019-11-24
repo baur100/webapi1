@@ -9,7 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
@@ -49,26 +50,26 @@ public class GetTest extends BaseTest{
         @Test
         public void getAllBooks(){
             Response response =
-                given()
-                     .baseUri(baseUrl)
-                     .basePath("api/books/all")
-                     .headers(headers)
-                .when()
-                     .get()
-                .then()
-                     .extract()
-                     .response();
-
+                    given()
+                            .baseUri(baseUrl)
+                            .basePath("api/books/all")
+                            .headers(headers)
+                            .when()
+                            .get()
+                            .then()
+                            .extract()
+                            .response();
             Assert.assertEquals(response.getStatusCode(),200);
 
             JsonPath json = response.jsonPath();
-            var allBooksResponse = json.getObject("$", GetAllBooksResponse.class);
+            GetAllBooksResponse getAllBookResponse = json.getObject("$", GetAllBooksResponse.class);
 
-            Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book->book.getId()==30).findFirst();
+            boolean result = getAllBookResponse.getValue().stream().anyMatch((s) -> s.getId()==30);
+            Assert.assertTrue(result);
 
-            Assert.assertTrue(theBook.isPresent(), "Book not found");
-
-            Book book=theBook.get();
+            List<Book> mabybook = getAllBookResponse.getValue().stream().filter(s->s.getId()==30).collect(Collectors.toList());
+            Assert.assertTrue (mabybook.size()!=0);
+            var book = mabybook.get(0);
             Assert.assertEquals(book.getId(),30);
             Assert.assertEquals(book.getAuthor(),"Joan Rouling");
             Assert.assertEquals(book.getCondition(),"new");

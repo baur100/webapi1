@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import models.Book;
 import models.BookCreateResponse;
 import models.BookDeleteResponse;
+import models.BookUpdateResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -64,15 +65,44 @@ public class CreateUpdateDeleteTest extends BaseTest{
 
     @Test
     public void deleteNonExistingBook(){
+        Response response = given()
+                .baseUri(baseUrl)
+                .basePath("api/books/id/1024")
+                .headers(headers)
+                .when()
+                .delete()
+                .then()
+                .extract()
+                .response();
 
+        Assert.assertEquals(response.statusCode(),404);
+        JsonPath json = response.jsonPath();
+        var bookDeleteResponse = json.getObject("$", BookDeleteResponse.class);
+        Assert.assertEquals(bookDeleteResponse.getErrors().size(),1);
+        Assert.assertEquals(bookDeleteResponse.getErrors().get(0),"The book record couldn't be found.");
     }
 
     @Test
     public void updateBook(){
+        Book updateBook = generateRandomBook();
+        String payload = new Gson().toJson(updateBook);
 
+            Response response = given()
+                    .baseUri(baseUrl)
+                    .basePath("api/books/id/234")
+                    .headers(headers)
+                    .body(payload)
+            .when()
+                    .put()
+            .then()
+                    .extract()
+                    .response();
+
+            Assert.assertEquals(response.statusCode(),200);
+
+            JsonPath json = response.jsonPath();
+            var bookUpdateResponse = json.getObject("$", BookUpdateResponse.class);
+            Assert.assertEquals(bookUpdateResponse.getErrors().size(),0);
+            Assert.assertTrue(bookUpdateResponse.value);
     }
-
-
-
-
 }
