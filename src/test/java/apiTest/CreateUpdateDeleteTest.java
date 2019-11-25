@@ -108,6 +108,6 @@ public class CreateUpdateDeleteTest extends BaseTest {
         JsonPath json = response.jsonPath();
         var bookUpdateResponse = json.getObject("$", BookUpdateResponse.class);
         Assert.assertEquals(bookUpdateResponse.getErrors().size(), 0);
-        Assert.assertEquals(bookUpdateResponse.value,true, "Book info wasn't updated");
+        Assert.assertEquals(bookUpdateResponse.value, true, "Book info wasn't updated");
     }
 }
