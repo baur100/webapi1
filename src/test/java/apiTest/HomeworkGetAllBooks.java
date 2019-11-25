@@ -18,7 +18,7 @@ public class HomeworkGetAllBooks extends BaseTest {
 
         Response response =
                 given()
-                        .baseUri(basUrl)
+                        .baseUri(baseUrl)
                         .basePath("api/books/all")
                         .headers(headers)
                         .when()
@@ -56,7 +56,7 @@ public class HomeworkGetAllBooks extends BaseTest {
 
         Response response =
                 given()
-                        .baseUri(basUrl)
+                        .baseUri(baseUrl)
                         .basePath("api/books/all")
                         .headers(headers)
                         .when()
