@@ -78,6 +78,7 @@ public class GetTest extends BaseTest{
 
             Assert.assertNotEquals(theBook.getId(), 0, "book not found");
 
+
         }
 
     }
