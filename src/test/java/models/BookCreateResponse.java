@@ -2,11 +2,11 @@ package models;
 
 import java.util.List;
 
-public class GetAllBooksResponse {
-    private List<Book> value;
+public class BookCreateResponse {
+    private int value;
     private List<String> errors;
 
-    public List<Book> getValue() {
+    public int getValue() {
         return value;
     }
 

@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 
@@ -49,36 +49,30 @@ public class GetTest extends BaseTest{
         @Test
         public void getAllBooks(){
             Response response =
-                    given()
-                            .baseUri(baseUrl)
-                            .basePath("api/books/all")
-                            .headers(headers)
-                    .when()
-                            .get()
-                    .then()
-                            .extract()
-                            .response();
+                given()
+                     .baseUri(baseUrl)
+                     .basePath("api/books/all")
+                     .headers(headers)
+                .when()
+                     .get()
+                .then()
+                     .extract()
+                     .response();
 
             Assert.assertEquals(response.getStatusCode(),200);
 
-//переводим JSON test (string) in Java object - deserialization
             JsonPath json = response.jsonPath();
-            GetAllBooksResponse allBooksResponse = json.getObject("$",GetAllBooksResponse.class);
-//            Book book = json.getObject("value", Book.class);
+            var allBooksResponse = json.getObject("$", GetAllBooksResponse.class);
 
-//            Assert.assertEquals(allBooksResponse.getErrors().size(),0);
-//            Assert.assertEquals(allBooksResponse.getValue().size(),0);
+            Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book->book.getId()==30).findFirst();
 
-            Book theBook = new Book();
-            for (Book book:allBooksResponse.getValue()){
-                if(book.getId()==30){
-                    theBook = book;
-                }
-            }
+            Assert.assertTrue(theBook.isPresent(), "Book not found");
 
-            Assert.assertNotEquals(theBook.getId(), 0, "book not found");
-
-
+            Book book=theBook.get();
+            Assert.assertEquals(book.getId(),30);
+            Assert.assertEquals(book.getAuthor(),"Joan Rouling");
+            Assert.assertEquals(book.getCondition(),"new");
+            Assert.assertEquals(book.getGenre(),"fantasy");
+            Assert.assertEquals(book.getLabel(),"Harry Potter");
         }
-
     }
