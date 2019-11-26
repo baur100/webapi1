@@ -32,9 +32,11 @@ public class HomeworkDeleteAndUpdateBook extends BaseTest {
 
         JsonPath json = response.jsonPath();
         var bookDeleteResponse = json.getObject("$", BookDeleteResponse.class);
+
+        // Assert.assertEquals(bookDeleteResponse.getErrors().size(),1)
+        // Assert.assertEquals(bookDeletet.Response.gerErrors().get(0), "The book record couldn't be found.")
         Assert.assertEquals(bookDeleteResponse.getErrors().toString(),"[The book record couldn't be found.]");
-        Assert.assertNotNull(bookDeleteResponse.value);
-        Assert.assertEquals(bookDeleteResponse.value, false);
+        Assert.assertFalse(bookDeleteResponse.value);
         }
 
         @Test
@@ -63,7 +65,8 @@ public class HomeworkDeleteAndUpdateBook extends BaseTest {
             JsonPath json = response.jsonPath();
             var bookUpdateResponse = json.getObject("$", BookUpdateResponse.class);
             Assert.assertEquals(bookUpdateResponse.getErrors().size(),0);
-            Assert.assertEquals(bookUpdateResponse.value, true);
+            Assert.assertTrue(bookUpdateResponse.value);
+            Assert.assertNotNull(bookUpdateResponse.value);
             }
 
 }
