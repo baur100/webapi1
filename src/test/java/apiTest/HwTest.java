@@ -44,7 +44,7 @@ public class HwTest extends BaseTest {
         String payload = new Gson().toJson(book);
         Response response = given()
                 .baseUri(baseUrl)
-                .basePath("api/books/264")
+                .basePath("api/books/id/264")
                 .headers(headers)
                 .body(payload)
                 .when()
