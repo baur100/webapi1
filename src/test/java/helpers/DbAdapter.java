@@ -27,8 +27,25 @@ public class DbAdapter {
         return book;
     }
 
-    public static List<Book> getAllBooks(){
+    public static List<Book> getAllBooks() throws SQLException{
         List<Book> list = new ArrayList<>();
+
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "SELECT *  FROM [dbo].[Books]";
+        ResultSet result = statement.executeQuery(query);
+
+        while (result.next()){
+            Book book = new Book();
+            book.setId(result.getInt("Id"));
+            book.setLabel(result.getString("Label"));
+            book.setAuthor(result.getString("Author"));
+            book.setGenre(result.getString("Genre"));
+            book.setCondition(result.getString("Condition"));
+            list.add(book);
+        }
+
+        connection.close();
 
         return list;
     }
