@@ -1,13 +1,17 @@
 package apiTest;
 
+import helpers.DbAdapter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import models.Book;
 import models.BookResponse;
+import models.GetAllBooksResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 
@@ -46,6 +50,36 @@ public class GetTest extends BaseTest{
     }
         @Test
         public void getAllBooks(){
+            Response response =
+                given()
+                     .baseUri(baseUrl)
+                     .basePath("api/books/all")
+                     .headers(headers)
+                .when()
+                     .get()
+                .then()
+                     .extract()
+                     .response();
 
+            Assert.assertEquals(response.getStatusCode(),200);
+
+            JsonPath json = response.jsonPath();
+            var allBooksResponse = json.getObject("$", GetAllBooksResponse.class);
+
+            Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book->book.getId()==30).findFirst();
+
+            Assert.assertTrue(theBook.isPresent(), "Book not found");
+
+            Book book=theBook.get();
+            Assert.assertEquals(book.getId(),30);
+            Assert.assertEquals(book.getAuthor(),"Joan Rouling");
+            Assert.assertEquals(book.getCondition(),"new");
+            Assert.assertEquals(book.getGenre(),"fantasy");
+            Assert.assertEquals(book.getLabel(),"Harry Potter");
+        }
+        @Test
+        public void callToDb() throws SQLException {
+            var book = DbAdapter.getBookById(30);
+            Assert.assertEquals(book.getId(),30);
         }
     }
