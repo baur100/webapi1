@@ -64,6 +64,23 @@ public class CreateUpdateDeleteTest extends BaseTest{
 
     @Test
     public void deleteNonExistingBook(){
+        Response response = given()
+                .baseUri(baseUrl)
+                .basePath("api/books/id/253")
+                .headers(headers)
+                .when()
+                .delete()
+                .then()
+                .extract()
+                .response();
+
+        Assert.assertEquals(response.statusCode(),404);
+
+        JsonPath json = response.jsonPath();
+        var bookDeleteResponse = json.getObject("$", BookDeleteResponse.class);
+        Assert.assertEquals(bookDeleteResponse.getErrors().size(),1);
+        Assert.assertFalse(bookDeleteResponse.value);
+        Assert.assertEquals(bookDeleteResponse.getErrors().get(0), "The book record couldn't be found.");
 
     }
 
