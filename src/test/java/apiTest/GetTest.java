@@ -1,5 +1,6 @@
 package apiTest;
 
+import helpers.DBAdaptor;
 import helpers.DbAdapter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -82,4 +83,25 @@ public class GetTest extends BaseTest{
             var book = DbAdapter.getBookById(30);
             Assert.assertEquals(book.getId(),30);
         }
+
+        @Test
+    public void getAllBooksFromDB() throws SQLException {
+        var list= DbAdapter.getAllBooks();
+        Assert.assertTrue(list.size()>0);
+        }
+        @Test
+    public void addBookToDB() throws SQLException {
+        var book = new Book(0,"newBook", "Baur","Programming", "new");
+        int id=DbAdapter.addBookToDb(book);
+        Assert.assertTrue(id>0);
+        }
+    @Test
+    public void updateBookToDB() throws SQLException {
+        var book = new Book(333,"newBook", "Baur","Programming", "new");
+        DbAdapter.updateBookInDb(book);
+    }
+    @Test
+    public void deleteBookFromDb() throws SQLException {
+        DbAdapter.deleteBookFromDb(335);
+    }
     }
