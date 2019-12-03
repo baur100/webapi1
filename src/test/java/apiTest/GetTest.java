@@ -72,14 +72,21 @@ public class GetTest extends BaseTest{
 
             Book book=theBook.get();
             Assert.assertEquals(book.getId(),30);
-            Assert.assertEquals(book.getAuthor(),"Joan Rouling");
-            Assert.assertEquals(book.getCondition(),"new");
-            Assert.assertEquals(book.getGenre(),"fantasy");
-            Assert.assertEquals(book.getLabel(),"Harry Potter");
+            Assert.assertEquals(book.getAuthor(),"PTGoIjEY");
+            Assert.assertEquals(book.getCondition(),"ttRCR");
+            Assert.assertEquals(book.getGenre(),"Phowry");
+            Assert.assertEquals(book.getLabel(),"vnnAeDGDooba");
         }
         @Test
         public void callToDb() throws SQLException {
             var book = DbAdapter.getBookById(30);
             Assert.assertEquals(book.getId(),30);
         }
+        @Test
+    public void callToDb1() throws SQLException {
+
+        var book = DbAdapter.getAllBooks();
+        Assert.assertTrue(book.size() > 0);
     }
+
+}
