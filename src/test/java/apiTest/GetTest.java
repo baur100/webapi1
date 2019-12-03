@@ -1,7 +1,7 @@
 package apiTest;
 
- import helpers.DbAdaptor;
- import io.restassured.path.json.JsonPath;
+import helpers.DbAdapter;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import models.Book;
 import models.BookResponse;
@@ -10,13 +10,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
- import java.sql.SQLException;
- import java.util.Optional;
+import java.sql.SQLException;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 
 public class GetTest extends BaseTest{
-
     @Test
     public void testGet_getABookById() throws URISyntaxException {
         Response response =
@@ -78,11 +77,9 @@ public class GetTest extends BaseTest{
             Assert.assertEquals(book.getGenre(),"fantasy");
             Assert.assertEquals(book.getLabel(),"Harry Potter");
         }
-
         @Test
-    public void callToDb() throws SQLException {
-        var book = DbAdaptor.getBookById(30);
-
-        Assert.assertEquals(book.getId(),30);
+        public void callToDb() throws SQLException {
+            var book = DbAdapter.getBookById(30);
+            Assert.assertEquals(book.getId(),30);
         }
     }
