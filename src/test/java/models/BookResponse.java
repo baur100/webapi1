@@ -12,13 +12,6 @@ public class BookResponse {
         this.errors = errors;
     }
 
-    public void setBook(Book value) {
-        this.value = value;
-    }
-
-    public void setErrors(ArrayList<String> errors) {
-        this.errors = errors;
-    }
 
     public Book getValue() {
         return value;

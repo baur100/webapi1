@@ -1,5 +1,6 @@
 package apiTest;
 
+import helpers.DbAdapter;
 import io.restassured.http.ContentType;
 
 import io.restassured.path.json.JsonPath;
@@ -13,6 +14,9 @@ import io.restassured.response.Response;
 
 
 import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 
@@ -35,6 +39,7 @@ public class GetTest extends BaseTest{
         Assert.assertEquals(response.getStatusCode(),200);
 
         JsonPath json = response.jsonPath();
+        json.prettyPrint();
 
         //we can retrive only part of response
 
@@ -85,24 +90,65 @@ public class GetTest extends BaseTest{
         JsonPath json = response.jsonPath();
 
 
-        GetAllBooksResponse getAllBooksRespons = json.getObject("$",GetAllBooksResponse.class);
-
-
-        //Assertion that array Errors is empty
+        var getAllBooksRespons = json.getObject("$",GetAllBooksResponse.class);
 
         Assert.assertEquals(getAllBooksRespons.getErrors().size(),0);
-        Assert.assertEquals(getAllBooksRespons.getValue().size(),62);
 
-        var value= getAllBooksRespons.getValue().get(2);
+        // Book theBook = new Book();
+       Optional<Book> theBook = getAllBooksRespons.getValue().stream().filter(book->book.getId()==30).findFirst();
 
-        Assert.assertEquals(value.getId(),5);
-        Assert.assertEquals(value.getAuthor(),"Robert Shekley");
-        Assert.assertEquals(value.getCondition(),"used");
-        Assert.assertEquals(value.getGenre(),"science fiction");
-        Assert.assertEquals(value.getLabel(),"Lalangamena");
+
+//        for (Book book:getAllBooksRespons.getValue()){
+//            if(book.getId()==30){
+//                theBook = book;
+//
+//            }
+//        }
+
+       Assert.assertTrue(theBook.isPresent(),"Book not found");
+       Book book =theBook.get();
+        Assert.assertEquals(book.getId(),30);
+        Assert.assertEquals(book.getAuthor(),"Joan Rouling");
+        Assert.assertEquals(book.getCondition(),"new");
+        Assert.assertEquals(book.getGenre(),"fantasy");
+        Assert.assertEquals(book.getLabel(),"Harry Potter");
 
 
     }
+    @Test
+    public  void callToDb() throws SQLException {
+        var book = DbAdapter.getBookById(30);
+        Assert.assertEquals(book.getId(),30);
+    }
+
+    @Test
+    public void getAllBooksFromDb() throws SQLException {
+        var list =DbAdapter.getAllBooks();
+       Assert.assertTrue(list.size()!=0);
+    }
+    @Test
+    public void addBookToDb() throws SQLException {
+        var book = new Book(0,"newbook", "Baur","Programming","new");
+        int id = DbAdapter.addBookToDb(book);
+        Assert.assertTrue(id>0);
+
+    }
+    @Test
+    public void upDateBookToDb() throws SQLException {
+        var book = new Book(333, "newbook", "Baur", "Programming", "new");
+        DbAdapter.updateBookInDb(book);
+    }
+    @Test
+    public void deleteBookFromDb() throws SQLException {
+        DbAdapter.deleteBookFromDb(336);
+    }
+    @Test
+    public void getAllBooksByAuthor() throws SQLException {
+        var list = DbAdapter.selectAllBooksByAuthor("Baur");
+        Assert.assertTrue(list.size() != 0);
+    }
+
+
 
 
 }

@@ -14,6 +14,7 @@ public class Book {
         this.genre = genre;
         this.condition = condition;
     }
+    public Book(){};
 
     public void setId(int id) {
         this.id = id;

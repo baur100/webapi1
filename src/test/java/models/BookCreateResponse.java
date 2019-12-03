@@ -1,31 +1,29 @@
 package models;
 
-
 import java.util.List;
 
-public class GetAllBooksResponse {
+public class BookCreateResponse {
+    private int value;
+    private List<String> errors;
 
-        private List<Book> value;
-        private List<String> errors;
-
-    public GetAllBooksResponse(List<Book> value, List<String> errors) {
+    public BookCreateResponse(int value, List<String> errors) {
         this.value = value;
         this.errors = errors;
-    }
-
-    public List<Book> getValue() {
-        return value;
     }
 
     public List<String> getErrors() {
         return errors;
     }
 
+    public int getvalue() {
+        return value;
+    }
+
     public void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
-    public void setValue(List<Book> value) {
+    public void setId(int value) {
         this.value = value;
     }
 }
