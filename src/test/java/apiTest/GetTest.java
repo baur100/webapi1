@@ -1,6 +1,5 @@
 package apiTest;
 
-import helpers.DBAdaptor;
 import helpers.DbAdapter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 
-public class GetTest extends BaseTest{
+public class GetTest extends BaseTest {
     @Test
     public void testGet_getABookById() throws URISyntaxException {
         Response response =
@@ -30,78 +29,81 @@ public class GetTest extends BaseTest{
                         .extract()
                         .response();
 
-        Assert.assertEquals(response.getStatusCode(),200);
+        Assert.assertEquals(response.getStatusCode(), 200);
 
         JsonPath json = response.jsonPath();
-        BookResponse bookResponse = json.getObject("$",BookResponse.class);
+        BookResponse bookResponse = json.getObject("$", BookResponse.class);
         Book book = json.getObject("value", Book.class);
 
-        Assert.assertEquals(book.getId(),240);
-        Assert.assertEquals(book.getAuthor(),"XXstring");
-        Assert.assertEquals(book.getCondition(),"XXstring");
-        Assert.assertEquals(book.getGenre(),"XXstring");
-        Assert.assertEquals(book.getLabel(),"XXstring");
+        Assert.assertEquals(book.getId(), 240);
+        Assert.assertEquals(book.getAuthor(), "XXstring");
+        Assert.assertEquals(book.getCondition(), "XXstring");
+        Assert.assertEquals(book.getGenre(), "XXstring");
+        Assert.assertEquals(book.getLabel(), "XXstring");
 
-        Assert.assertEquals(bookResponse.getErrors().size(),0);
-        Assert.assertEquals(bookResponse.getValue().getId(),240);
-        Assert.assertEquals(bookResponse.getValue().getLabel(),"XXstring");
-        Assert.assertEquals(bookResponse.getValue().getAuthor(),"XXstring");
-        Assert.assertEquals(bookResponse.getValue().getGenre(),"XXstring");
-        Assert.assertEquals(bookResponse.getValue().getCondition(),"XXstring");
+        Assert.assertEquals(bookResponse.getErrors().size(), 0);
+        Assert.assertEquals(bookResponse.getValue().getId(), 240);
+        Assert.assertEquals(bookResponse.getValue().getLabel(), "XXstring");
+        Assert.assertEquals(bookResponse.getValue().getAuthor(), "XXstring");
+        Assert.assertEquals(bookResponse.getValue().getGenre(), "XXstring");
+        Assert.assertEquals(bookResponse.getValue().getCondition(), "XXstring");
     }
-        @Test
-        public void getAllBooks(){
-            Response response =
-                given()
-                     .baseUri(baseUrl)
-                     .basePath("api/books/all")
-                     .headers(headers)
-                .when()
-                     .get()
-                .then()
-                     .extract()
-                     .response();
 
-            Assert.assertEquals(response.getStatusCode(),200);
-
-            JsonPath json = response.jsonPath();
-            var allBooksResponse = json.getObject("$", GetAllBooksResponse.class);
-
-            Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book->book.getId()==30).findFirst();
-
-            Assert.assertTrue(theBook.isPresent(), "Book not found");
-
-            Book book=theBook.get();
-            Assert.assertEquals(book.getId(),30);
-            Assert.assertEquals(book.getAuthor(),"Joan Rouling");
-            Assert.assertEquals(book.getCondition(),"new");
-            Assert.assertEquals(book.getGenre(),"fantasy");
-            Assert.assertEquals(book.getLabel(),"Harry Potter");
-        }
-        @Test
-        public void callToDb() throws SQLException {
-            var book = DbAdapter.getBookById(30);
-            Assert.assertEquals(book.getId(),30);
-        }
-
-        @Test
-    public void getAllBooksFromDB() throws SQLException {
-        var list= DbAdapter.getAllBooks();
-        Assert.assertTrue(list.size()>0);
-        }
-        @Test
-    public void addBookToDB() throws SQLException {
-        var book = new Book(0,"newBook", "Baur","Programming", "new");
-        int id=DbAdapter.addBookToDb(book);
-        Assert.assertTrue(id>0);
-        }
     @Test
-    public void updateBookToDB() throws SQLException {
-        var book = new Book(333,"newBook", "Baur","Programming", "new");
+    public void getAllBooks() {
+        Response response =
+                given()
+                        .baseUri(baseUrl)
+                        .basePath("api/books/all")
+                        .headers(headers)
+                        .when()
+                        .get()
+                        .then()
+                        .extract()
+                        .response();
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+        JsonPath json = response.jsonPath();
+        var allBooksResponse = json.getObject("$", GetAllBooksResponse.class);
+
+        Optional<Book> theBook = allBooksResponse.getValue().stream().filter(book -> book.getId() == 30).findFirst();
+
+        Assert.assertTrue(theBook.isPresent(), "Book not found");
+
+        Book book = theBook.get();
+        Assert.assertEquals(book.getId(), 30);
+        Assert.assertEquals(book.getAuthor(), "Joan Rouling");
+        Assert.assertEquals(book.getCondition(), "new");
+        Assert.assertEquals(book.getGenre(), "fantasy");
+        Assert.assertEquals(book.getLabel(), "Harry Potter");
+    }
+
+    @Test
+    public void callToDb() throws SQLException {
+        var book = DbAdapter.getBookById(30);
+        Assert.assertEquals(book.getId(), 30);
+    }
+
+    @Test
+    public void getAllBooksFromDb() throws SQLException {
+        var list=DbAdapter.getAllBooks();
+        Assert.assertTrue(list.size()>0);
+    }
+    @Test
+    public void addBookToDb() throws SQLException {
+        var book = new Book(0,"newBook","Baur","Programming","new");
+        int id = DbAdapter.addBookToDb(book);
+        Assert.assertTrue(id>0);
+    }
+    @Test
+    public void updateBookToDb() throws SQLException {
+        var book = new Book(550,"newBook","Baur","Programming","new");
         DbAdapter.updateBookInDb(book);
     }
     @Test
-    public void deleteBookFromDb() throws SQLException {
+    public void deleteBookToDb() throws SQLException {
         DbAdapter.deleteBookFromDb(335);
     }
-    }
+
+}
