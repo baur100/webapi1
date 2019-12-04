@@ -16,6 +16,8 @@ import java.util.Optional;
 import static io.restassured.RestAssured.given;
 
 public class GetTest extends BaseTest {
+
+
     @Test
     public void testGet_getABookById() throws URISyntaxException {
         Response response =
@@ -104,6 +106,12 @@ public class GetTest extends BaseTest {
     @Test
     public void deleteBookToDb() throws SQLException {
         DbAdapter.deleteBookFromDb(335);
+    }
+
+    @Test
+    public void getAllBookByAuthor() throws SQLException {
+        var list = DbAdapter.getAllBooksByAuthor("Author");
+        Assert.assertTrue(list.size() >0);
     }
 
 }
