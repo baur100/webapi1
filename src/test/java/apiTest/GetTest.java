@@ -1,5 +1,6 @@
 package apiTest;
 
+import helpers.DataBaseAdapter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import models.Book;
@@ -9,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -77,7 +79,49 @@ public class GetTest extends BaseTest {
         Assert.assertEquals(someBook.get().getId(), 239, "No such id");
 
     }
+
+
+    @Test
+    public void callToDataBase() throws SQLException {
+        var book = DataBaseAdapter.getBookById(279);
+        Assert.assertEquals(book.getId(), 279);
+
+    }
+
+    @Test
+    public void getAllBooksFromDataBase() throws SQLException {
+        var list = DataBaseAdapter.getAllBooks();
+        Assert.assertTrue(list.size() > 0);
+    }
+
+
+    @Test
+    public void addBookToDataBase() throws SQLException {
+        var book = new Book(0, "NBL", "NBA", "NBG", "NBC");
+        int id = DataBaseAdapter.addBookToDataBase(book);
+        Assert.assertTrue(id > 0);
+    }
+
+    @Test
+    public void updateBookToDataBase() throws SQLException {
+        var book = new Book(134, "UpdatedBook", "UpdatedAuthor", "UpdatedGenre", "UpdatedCondition");
+        DataBaseAdapter.updateBookInDataBase(book);
+    }
+
+    @Test
+    public void deleteBookFromDataBase() throws SQLException {
+        DataBaseAdapter.deleteBookFromDataBase(800);
+    }
+
+    @Test
+    public void getAllBooksByAuthorFromDataBase() throws SQLException {
+        var list = DataBaseAdapter.getAllBooksByAuthorFromDataBase();
+        Assert.assertTrue(list.size() > 0);
+
+    }
 }
+
+
 /*
 
     @Test
@@ -137,5 +181,3 @@ public class GetTest extends BaseTest {
 
     }
 */
-
-
