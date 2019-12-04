@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
@@ -87,9 +86,24 @@ public class GetTest extends BaseTest {
     }
 
     @Test
-    public void callToDb1() throws SQLException {
-
-        var book = DbAdapter.getAllBooks();
-        Assert.assertTrue(book.size() > 0);
+    public void getAllBooksFromDb() throws SQLException {
+        var list=DbAdapter.getAllBooks();
+        Assert.assertTrue(list.size()>0);
     }
+    @Test
+    public void addBookToDb() throws SQLException {
+        var book = new Book(0,"newBook","Baur","Programming","new");
+        int id = DbAdapter.addBookToDb(book);
+        Assert.assertTrue(id>0);
+    }
+    @Test
+    public void updateBookToDb() throws SQLException {
+        var book = new Book(550,"newBook","Baur","Programming","new");
+        DbAdapter.updateBookInDb(book);
+    }
+    @Test
+    public void deleteBookToDb() throws SQLException {
+        DbAdapter.deleteBookFromDb(335);
+    }
+
 }
