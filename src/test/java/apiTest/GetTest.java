@@ -102,14 +102,14 @@ public class GetTest extends BaseTest {
         DbAdapter.updateBookInDb(book);
     }
     @Test
-    public void deleteBookFromDb() throws SQLException {
+    public void deleteBookToDb() throws SQLException {
         DbAdapter.deleteBookFromDb(335);
     }
     @Test
-    public void getAllBooksByAuthor() throws SQLException {
-        var list=DbAdapter.getAllBooksByAuthor("%Tolstoy");
-        System.out.println(list);
-        Assert.assertTrue(list.size()>0);
+    public void getByAuthor() throws SQLException {
+        var books =DbAdapter.getBookByAuthor("Max Kamenni");
+        Assert.assertTrue(books.size()>0);
+
     }
 
 }
