@@ -119,6 +119,13 @@ public class GetTest extends BaseTest {
         Assert.assertTrue(list.size() > 0);
 
     }
+
+    @Test
+    public void getAllBooksByConditionFromDataBase() throws SQLException {
+        var list = DataBaseAdapter.getAllBooksByConditionFromDataBase();
+        Assert.assertTrue(list.size() > 0);
+
+    }
 }
 
 
