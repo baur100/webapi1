@@ -81,7 +81,7 @@ public class DbAdapter {
         List<Book> list = new ArrayList<Book>();
         Connection connection = DriverManager.getConnection(connectionUrl);
         Statement statement = connection.createStatement();
-        String query= "SELECT * FROM Books WHERE Author LIKE '"+ author + "';";
+        String query= "SELECT * FROM Books WHERE Author LIKE '"+ author + "');";
         ResultSet result = statement.executeQuery(query);
         while (result.next()){
             var book = new Book();

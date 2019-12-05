@@ -1,5 +1,6 @@
 package apiTest;
 
+import helpers.DBAdaptor;
 import io.restassured.path.json.JsonPath;
 import models.GetAllBooksResponse;
 import models.Book;
@@ -9,6 +10,7 @@ import org.testng.annotations.Test;
 import io.restassured.response.Response;
 
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
@@ -103,4 +105,11 @@ public class MyGetTest extends BaseTest {
         Assert.assertEquals(allBooksResponse.getErrors().size(), 0);
 
     }
+    @Test
+    public void getAllBooksByAuthor() throws SQLException {
+        var list= DBAdaptor.getAllBooksByAuthor("%Tolstoy");
+        System.out.println(list);
+        Assert.assertTrue(list.size()>0);
+    }
+
 }
