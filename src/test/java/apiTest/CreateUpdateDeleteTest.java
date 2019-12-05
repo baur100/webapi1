@@ -76,9 +76,7 @@ public class CreateUpdateDeleteTest extends BaseTest {
         // что бы потом в афтерметоде удалить книку с этим айди
         book.setId(bookCreateResponse.getvalue());
 
-        System.out.println(bookCreateResponse.getvalue());
-
-    }
+          }
 
 
     @Test

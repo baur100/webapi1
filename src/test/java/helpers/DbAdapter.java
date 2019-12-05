@@ -83,6 +83,7 @@ public class DbAdapter {
       Statement statement = connection.createStatement();
       String query = "DELETE FROM[dbo].[Books] WHERE Id="+id+";";
       statement.executeUpdate(query);
+      connection.close();
   }
 
     public static List<Book> selectAllBooksByAuthor(String author) throws SQLException {
@@ -108,5 +109,16 @@ public class DbAdapter {
         }
         connection.close();
         return list;
+    }
+    public static Boolean bookExistInDb(int id) throws SQLException {
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+
+        String query = "SELECT * FROM [dbo].[Books] WHERE Id ="+id;
+        ResultSet result = statement.executeQuery(query);
+
+        connection.close();
+        return result.next();
+
     }
 }
