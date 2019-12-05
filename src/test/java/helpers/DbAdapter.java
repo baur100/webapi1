@@ -109,22 +109,4 @@ public class DbAdapter {
         String query = "DELETE FROM [dbo].[Books] WHERE Id="+id+";";
         statement.executeUpdate(query);
     }
-    public static List<Book> getAllBooksByAuthor(String author) throws SQLException {
-        List<Book> list = new ArrayList<Book>();
-        Connection connection = DriverManager.getConnection(connectionUrl);
-        Statement statement = connection.createStatement();
-        String query= "SELECT * FROM Books WHERE Author LIKE '"+ author + "');";
-        ResultSet result = statement.executeQuery(query);
-        while (result.next()){
-            var book = new Book();
-            book.setId(result.getInt("Id"));
-            book.setLabel(result.getString("Label"));
-            book.setAuthor(result.getString("Author"));
-            book.setGenre(result.getString("Genre"));
-            book.setCondition(result.getString("Condition"));
-            list.add(book);
-        }
-        connection.close();
-        return list;
-    }
 }
