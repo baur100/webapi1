@@ -103,7 +103,7 @@ public class GetTest extends BaseTest {
     }
     @Test
     public void deleteBookToDb() throws SQLException {
-        DbAdapter.deleteBookFromDb(335);
+        DbAdapter.deleteBookFromDb(363);
     }
     @Test
     public void getByAuthor() throws SQLException {
