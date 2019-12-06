@@ -107,6 +107,12 @@ public class GetTest extends BaseTest {
     public void deleteBookToDb() throws SQLException {
         DbAdapter.deleteBookFromDb(335);
     }
+    @Test
+    public void getByAuthor() throws SQLException {
+        var books =DbAdapter.getBookByAuthor("Max Kamenni");
+        Assert.assertTrue(books.size()>0);
+
+    }
 
     @Test
     public void getAllBookByAuthor() throws SQLException {
