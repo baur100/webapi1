@@ -109,7 +109,16 @@ public class GetTest extends BaseTest {
     public void getByAuthor() throws SQLException {
         var books =DbAdapter.getBookByAuthor("Max Kamenni");
         Assert.assertTrue(books.size()>0);
-
+    }
+    @Test
+    public void getUsersBookById() throws SQLException {
+        var usersBook = DbAdapter.getUsersBookById(22);
+        Assert.assertEquals(usersBook.getBookId(),31);
+    }
+    @Test
+    public void getAllUsersBook() throws SQLException{
+        var list = DbAdapter.getAllUsersBooks();
+        Assert.assertTrue(list.size()>0);
     }
 
 }
