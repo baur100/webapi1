@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import helpers.DbAdapter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import models.Book;
 import models.UsersBook;
 import models.UsersBookAddResponse;
 import org.testng.Assert;
@@ -13,23 +14,41 @@ import org.testng.annotations.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
-public class UserBookOuterJoin extends BaseTest {
+public class MyTestUserBook extends BaseTest {
     int bookId;
     int idUsersBook;
     private final String userId="aa22b9b2-9160-432b-91c1-b2c6466d8dfb";
 
-    //TODO ===========================
     @BeforeMethod
     public void startUp() throws SQLException {
+        List<Book> books= DbAdapter.getAllBooks();
+
+        List<Integer> bookIds= books.stream().map(Book::getId).collect(Collectors.toList());
+        //The same as above
+//        List<Integer> bookIds= books.stream().map(x->x.getId()).collect(Collectors.toList());
+//        or
+//        List<Integer> list=new ArrayList<>();
+//        for (Book book:books){
+//            list.add(book.getId());
+//        }
+
+        List<UsersBook> ubList = DbAdapter.getAllUsersBooks();
+
+        List<Integer>allowedBooks = new ArrayList<Integer>();
+        for (int id:bookIds){
+            if(ubList.stream().noneMatch(x->x.getBookId()==id))
+                allowedBooks.add(id);
+        }
+        //==============================
         var random = new Random();
-        var allowedBooks=DbAdapter.getUnusedBookIds();
         bookId = allowedBooks.get(random.nextInt(allowedBooks.size()));
     }
-
     @AfterMethod
     public void tearDown() throws SQLException {
         DbAdapter.deleteUsersBookFromDb(idUsersBook);
@@ -67,4 +86,5 @@ public class UserBookOuterJoin extends BaseTest {
         Assert.assertEquals(usersBookFromDb.getBookId(),bookId);
         Assert.assertEquals(usersBookFromDb.getUserId(),userId);
     }
+
 }

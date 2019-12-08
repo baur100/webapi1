@@ -153,10 +153,17 @@ public class DbAdapter {
         statement.executeUpdate(query);
     }
 //TODO =================
-    public static List<Integer> getUnusedBookIds(){
+    public static List<Integer> getUnusedBookIds() throws SQLException {
         List<Integer> list = new ArrayList<>();
-//        "SELECT a.id FROM Books as a FULL JOIN UserBooks as b ON a.Id = b.BookId WHERE a.Id IS NULL OR b.BookId IS NULL;"
-
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "SELECT A.id FROM Books AS A FULL JOIN UserBooks AS B ON A.Id = B.BookId WHERE A.Id IS NULL OR B.BookId IS NULL;";
+        ResultSet result = statement.executeQuery(query);
+        while (result.next()){
+        int bookId = result.getInt("Id");
+        list.add(bookId);
+        }
+        connection.close();
         return list;
     }
 
