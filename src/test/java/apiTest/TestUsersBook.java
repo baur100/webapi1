@@ -78,6 +78,6 @@ public class TestUsersBook extends BaseTest {
 
         var usersBookFromDb = DbAdapter.getUsersBookById(idUsersBook);
         Assert.assertEquals(usersBookFromDb.getBookId(),bookId);
-        Assert.assertEquals(usersBookFromDb.getUserId(),userId);
+        Assert.assertEquals(usersBookFromDb.getUserId().toString(),userId);
     }
 }
