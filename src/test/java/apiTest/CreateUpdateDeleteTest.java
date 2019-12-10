@@ -58,7 +58,6 @@ public class CreateUpdateDeleteTest extends BaseTest{
         Assert.assertEquals(bookCreateResponse.getErrors().size(),0);
         Assert.assertTrue(bookCreateResponse.getValue()>0);
         book.setId(bookCreateResponse.getValue());
-        System.out.println(bookCreateResponse.getValue());
     }
 
     @Test
