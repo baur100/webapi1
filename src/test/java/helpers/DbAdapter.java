@@ -152,11 +152,21 @@ public class DbAdapter {
         String query = "DELETE FROM [dbo].[UserBooks] WHERE Id="+id+";";
         statement.executeUpdate(query);
     }
-//TODO =================
-    public static List<Integer> getUnusedBookIds(){
-        List<Integer> list = new ArrayList<>();
-//        "SELECT a.id FROM Books as a FULL JOIN UserBooks as b ON a.Id = b.BookId WHERE a.Id IS NULL OR b.BookId IS NULL;"
 
+    public static List<Integer> getUnusedBookIds() throws SQLException {
+        List<Integer> list = new ArrayList<>();
+
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "SELECT a.id FROM Books as a FULL JOIN UserBooks as b ON a.Id = b.BookId WHERE a.Id IS NULL OR b.BookId IS NULL;";
+        ResultSet result = statement.executeQuery(query);
+
+        while (result.next()) {
+            int id;
+            id = result.getInt("Id");
+            list.add(id);
+        }
+        connection.close();
         return list;
     }
 
