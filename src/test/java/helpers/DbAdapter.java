@@ -1,6 +1,8 @@
 package helpers;
 
 import models.Book;
+import models.UsersBook;
+
 import java.sql.*;
 import java.util.*;
 
@@ -109,4 +111,63 @@ public class DbAdapter {
         String query = "DELETE FROM [dbo].[Books] WHERE Id="+id+";";
         statement.executeUpdate(query);
     }
+
+    public static UsersBook getUsersBookById(int id) throws SQLException {
+        UsersBook usersBook = new UsersBook();
+
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "SELECT *  FROM [dbo].[UserBooks] WHERE Id = " + id + ";";
+        ResultSet result = statement.executeQuery(query);
+
+        while (result.next()){
+            usersBook.setBookId(result.getInt("BookId"));
+            usersBook.setId(result.getInt("Id"));
+            usersBook.setUserId(result.getString("UserId"));
+        }
+        connection.close();
+        return usersBook;
+    }
+    public static List<UsersBook> getAllUsersBooks()throws SQLException{
+        List<UsersBook> list = new ArrayList<UsersBook>();
+
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "SELECT *  FROM [dbo].[UserBooks];";
+        ResultSet result = statement.executeQuery(query);
+
+        while (result.next()){
+            var usersBook = new UsersBook();
+            usersBook.setBookId(result.getInt("BookId"));
+            usersBook.setId(result.getInt("Id"));
+            usersBook.setUserId(result.getString("UserId"));
+            list.add(usersBook);
+        }
+        connection.close();
+        return list;
+    }
+    public static void deleteUsersBookFromDb(int id)throws SQLException{
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "DELETE FROM [dbo].[UserBooks] WHERE Id="+id+";";
+        statement.executeUpdate(query);
+    }
+
+    public static List<Integer> getUnusedBookIds() throws SQLException {
+        List<Integer> list = new ArrayList<>();
+
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        Statement statement = connection.createStatement();
+        String query = "SELECT a.id FROM Books as a FULL JOIN UserBooks as b ON a.Id = b.BookId WHERE a.Id IS NULL OR b.BookId IS NULL;";
+        ResultSet result = statement.executeQuery(query);
+
+        while (result.next()) {
+            int id;
+            id = result.getInt("Id");
+            list.add(id);
+        }
+        connection.close();
+        return list;
+    }
+
 }
