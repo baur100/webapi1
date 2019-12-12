@@ -1,6 +1,5 @@
 package apiTest;
 
-import helpers.DbAdapter;
 import models.Book;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -44,6 +43,39 @@ public class HomeworkDatabaseGetAllBooks {
         public void callToDBAllBooks() throws SQLException {
             var list = getAllBooks();
             Assert.assertTrue(list.size()>0);
+        }
+
+    public static List<Book> getAllBooksByAuthor(String author) throws SQLException {
+
+            List<Book> list = new ArrayList<>();
+
+            Connection connection = DriverManager.getConnection(connectionUrl);
+            Statement statement = connection.createStatement();
+            String query = "SELECT *  FROM [dbo].[Books] where Author = '" + author + "';";
+            ResultSet result = statement.executeQuery(query);
+
+
+
+            while (result.next()){
+
+                Book book = new Book();
+                book.setId(result.getInt("Id"));
+                book.setLabel(result.getString("Label"));
+                book.setAuthor(result.getString("Author"));
+                book.setGenre(result.getString("Genre"));
+                book.setCondition(result.getString("Condition"));
+
+                list.add(book);
+            }
+            return list;
+        }
+
+        @Test
+        public void getAllBooksByAuthor_size() throws SQLException {
+        String author = "Tanik";
+        var list = getAllBooksByAuthor(author);
+        Assert.assertTrue(list.size()>0);
+        System.out.println("Found " + list.size() + " books by " + author);
         }
 
     }
