@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;
+import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 
@@ -20,10 +21,12 @@ public class UserBookOuterJoin extends BaseTest {
     int idUsersBook;
     private final String userId="aa22b9b2-9160-432b-91c1-b2c6466d8dfb";
 
-    //TODO ===========================
-    @BeforeMethod
-    public void startUp(){
 
+    @BeforeMethod
+    public void startUp() throws SQLException {
+        Random random = new Random();
+        var list = DbAdapter.getUnusedBookIds();
+        bookId=list.get(random.nextInt(list.size()));
     }
 
     @AfterMethod
@@ -61,6 +64,6 @@ public class UserBookOuterJoin extends BaseTest {
 
         var usersBookFromDb = DbAdapter.getUsersBookById(idUsersBook);
         Assert.assertEquals(usersBookFromDb.getBookId(),bookId);
-        Assert.assertEquals(usersBookFromDb.getUserId(),userId);
+        Assert.assertEquals(usersBookFromDb.getUserId().toString(),userId);
     }
 }
