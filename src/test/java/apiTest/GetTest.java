@@ -143,9 +143,26 @@ public class GetTest extends BaseTest{
         DbAdapter.deleteBookFromDb(336);
     }
     @Test
+    public void deleteBookToDb() throws SQLException {
+        DbAdapter.deleteBookFromDb(335);
+
+    }
+    @Test
     public void getAllBooksByAuthor() throws SQLException {
         var list = DbAdapter.selectAllBooksByAuthor("Baur1");
 //       Assert.assertTrue(list.size()!=0);
+    }
+    @Test
+    public void getUsersBookById() throws SQLException {
+        var usersBook = DbAdapter.getUsersBookById(22);
+        Assert.assertEquals(usersBook.getBookId(),31);
+    }
+    @Test
+    public void getAllUsersBook() throws SQLException {
+        var list = DbAdapter.getAllUsersBooks();
+        Assert.assertTrue(list.size()>0);
+
+
     }
 
 
