@@ -99,7 +99,7 @@ public class TestUsersBook extends BaseTest{
         //вытащили строку заиса из ДБ про юзеров с книгами
         var usersBookFromDb= DbAdapter.getUsersBookById(idUsersBook);
         Assert.assertEquals(usersBookFromDb.getBookId(),bookId);
-        Assert.assertEquals(usersBookFromDb.getUserId(),userId);
+        Assert.assertEquals(usersBookFromDb.getUserId().toString(),userId);
 
 
 
