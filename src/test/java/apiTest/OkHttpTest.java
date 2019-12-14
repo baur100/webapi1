@@ -28,7 +28,7 @@ public class OkHttpTest {
 
         String body = response.body().string();
         GetAllBooksResponse allBooks =  gson.fromJson(body, GetAllBooksResponse.class);
-
+        Assert.assertTrue(allBooks.getErrors().size()==0);
+        Assert.assertTrue(allBooks.getValue().size()>0);
     }
-
 }
