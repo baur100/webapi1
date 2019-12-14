@@ -16,8 +16,8 @@
                 <version>3.6.1</version>
                 <configuration>
                     <release>13.0.1</release>
-                    <source>13.0.1</source>
-                    <target>13.0.1</target>
+                    <source>12</source>
+                    <target>12</target>
                 </configuration>
             </plugin>
             <plugin>
