@@ -100,7 +100,7 @@ public class TestUsingDb extends BaseTest {
     }
 
     @Test
-    public void updateBook() throws SQLException {
+    public void updateBook(){
         //Arrange
         init();
         Book book1 = generateRandomBook();
@@ -126,12 +126,6 @@ public class TestUsingDb extends BaseTest {
         Assert.assertEquals(bookResponse.getErrors().size(),0);
         Assert.assertNotNull(bookResponse.value);
         Assert.assertTrue(bookResponse.value);
-        //TODO Homework: get Book from DB and assert it is changed assert equal to `book1` except id
-      var bookFromDb = DbAdapter.getBookById(book.getId());
-      Assert.assertEquals(bookFromDb.getLabel(), book1.getLabel());
-      Assert.assertEquals(bookFromDb.getGenre(), book1.getGenre());
-      Assert.assertEquals(bookFromDb.getAuthor(), book1.getAuthor());
-      Assert.assertEquals(bookFromDb.getCondition(), book1.getCondition());
     }
 
     @Test
