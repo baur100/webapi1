@@ -16,7 +16,6 @@ import org.testng.annotations.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.Random;
 
@@ -78,6 +77,6 @@ public class TestUsersBook extends BaseTest {
 
         var usersBookFromDb = DbAdapter.getUsersBookById(idUsersBook);
         Assert.assertEquals(usersBookFromDb.getBookId(),bookId);
-        Assert.assertEquals(usersBookFromDb.getUserId(),userId);
+        Assert.assertEquals(usersBookFromDb.getUserId().toString(),userId);
     }
 }

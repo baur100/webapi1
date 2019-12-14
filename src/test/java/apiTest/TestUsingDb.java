@@ -126,7 +126,6 @@ public class TestUsingDb extends BaseTest {
         Assert.assertEquals(bookResponse.getErrors().size(),0);
         Assert.assertNotNull(bookResponse.value);
         Assert.assertTrue(bookResponse.value);
-        //TODO Homework: get Book from DB and assert it is changed assert equal to `book1` except id
     }
 
     @Test
