@@ -69,9 +69,9 @@ public class HWCreateDeleteUpdateBook extends BaseTest{
 
         JsonPath json = response.jsonPath();
         json.prettyPrint();
-//        BookUpdateResponse bookUpdateResponse = json.getObject("$", BookUpdateResponse.class);
-//        Assert.assertEquals(bookUpdateResponse.getErrors().size(), 0);
-//        Assert.assertTrue(bookUpdateResponse.value);
+        BookResponse bookUpdateResponse = json.getObject("$", BookResponse.class);
+        Assert.assertEquals(bookUpdateResponse.getErrors().size(), 0);
+        Assert.assertTrue(bookUpdateResponse.getValue() != null );
     }
 
     @Test
