@@ -92,5 +92,13 @@
             <version>4.2.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.konghq/unirest-java -->
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.3.00</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 </project>
